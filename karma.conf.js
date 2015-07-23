@@ -20,7 +20,9 @@ module.exports = function(config) {
   		'bower_components/angular-aria/angular-aria.min.js',
   		'bower_components/angular-material/angular-material.min.js',
       'node_modules/angular-mocks/angular-mocks.js',
-      'app/**/*.js'
+      'app/app.js',
+      'app/**/!(*.spec)*.js',
+      'app/**/*.spec.js'
     ],
 
 

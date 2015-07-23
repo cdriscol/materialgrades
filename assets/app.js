@@ -47892,6 +47892,20 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/* mixin definition ;
 (function() {
 'use strict';
 
+function GradesController(studentService) {
+  var vm = this;
+  vm.students = [];
+}
+
+angular
+  .module('mg')
+  .controller('GradesController', GradesController);
+
+GradesController.$inject = ['studentService'];
+})();
+(function() {
+'use strict';
+
 function HomeController() {
   var vm = this;
   vm.title = 'Chris Driscol | Material Grades';
@@ -47900,4 +47914,70 @@ function HomeController() {
 angular
   .module('mg')
   .controller('HomeController', HomeController);
+})();
+(function() {
+  'use strict';
+
+  angular
+    .module('mg')
+    .factory('studentService', studentsdata);
+
+  function studentsdata() {
+    var _students = {};
+    return {
+      getStudents: getStudents,
+      updateStudent: updateStudent,
+      deleteStudent: deleteStudent,
+      createStudent: createStudent,
+      getStudent: getStudent
+    };
+
+    function getStudents() {
+      var students = [];
+      for(var id in _students) {
+        students.push(_students[id]);
+      }
+      return students;
+    }
+
+    function updateStudent(student) {
+      _students[student.id] = student;
+      return student;
+    }
+
+    function deleteStudent(student) {
+      delete _students[student.id];
+      return student;
+    }
+
+    function getStudent(id) {
+      return _students[id];
+    }
+
+    function createStudent(student) {
+      student.id = Object.keys(_students).length;
+      _students[student.id] = student;
+      return student;
+    }
+  }
+})();
+(function() {
+  'use strict';
+
+  angular
+    .module('mg')
+    .factory('Student', StudentModel);
+
+  function StudentModel() {
+    function Student(name, grade) {
+      this.name = name;
+      this.grade = grade;
+    }
+
+    Student.prototype.isFailing = function() {
+      return this.grade < 65;
+    };
+
+    return (Student);
+  }
 })();
