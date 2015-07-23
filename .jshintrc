@@ -34,6 +34,7 @@
 		"it",
 		"inject",
 		"expect",
+		"spyOn",
 		"Student"
 	],
 	"indent": 4, // Specify indentation spacing

@@ -5,7 +5,9 @@
     .module('mg')
     .factory('studentService', studentsdata);
 
-  function studentsdata() {
+  studentsdata.$inject = ['Student'];
+
+  function studentsdata(Student) {
     var _students = {};
     return {
       getStudents: getStudents,
@@ -37,7 +39,8 @@
       return _students[id];
     }
 
-    function createStudent(student) {
+    function createStudent(name, grade) {
+      var student = new Student(name, grade);
       student.id = Object.keys(_students).length;
       _students[student.id] = student;
       return student;

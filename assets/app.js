@@ -47892,28 +47892,86 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/* mixin definition ;
 (function() {
 'use strict';
 
-function GradesController(studentService) {
-  var vm = this;
-  vm.students = [];
-}
-
 angular
   .module('mg')
   .controller('GradesController', GradesController);
 
-GradesController.$inject = ['studentService'];
+GradesController.$inject = ['studentService', 'Student'];
+
+function GradesController(studentService, Student) {
+  var vm = this;
+  vm.students = studentService.getStudents();
+  vm.addStudent = addStudent;
+
+  function addStudent() {
+    var student = studentService.createStudent(vm.name, vm.grade);
+    vm.students.push(student);
+  }
+}
 })();
 (function() {
 'use strict';
 
-function HomeController() {
-  var vm = this;
-  vm.title = 'Chris Driscol | Material Grades';
-}
-
 angular
   .module('mg')
-  .controller('HomeController', HomeController);
+  .controller('SummaryController', SummaryController);
+
+SummaryController.$inject = ['gradeCalculator', '$scope'];
+
+function SummaryController(gradeCalculator, $scope) {
+  var vm = this;
+
+  $scope.$on('grades-changed', function(event, args) {
+    gradeCalculator.calcGrades();
+    vm.minGrade = gradeCalculator.getMinGrade();
+    vm.maxGrade = gradeCalculator.getMaxGrade();
+    vm.avgGrade = gradeCalculator.getAvgGrade();
+  });
+}
+})();
+(function() {
+  'use strict';
+
+  angular
+    .module('mg')
+    .factory('gradeCalculator', gradeCalculator);
+
+  gradeCalculator.$inject = ['studentService'];
+
+  function gradeCalculator(studentService) {
+    var minGrade = 100,
+        maxGrade = 0,
+        avgGrade = 0;
+    return {
+      getMinGrade: getMinGrade,
+      getAvgGrade: getAvgGrade,
+      getMaxGrade: getMaxGrade,
+      calcGrades: calcGrades
+    };
+
+    function getMinGrade() {
+      return minGrade;
+    }
+
+    function getAvgGrade() {
+      return avgGrade;
+    }
+
+    function getMaxGrade() {
+      return maxGrade;
+    }
+
+    function calcGrades() {
+      var sumGrade = 0,
+          students = studentService.getStudents();
+      students.forEach(function(student) {
+        minGrade = Math.min(minGrade, student.grade);
+        maxGrade = Math.max(maxGrade, student.grade);
+        sumGrade += student.grade;
+      });
+      avgGrade = sumGrade / students.length;
+    }
+  }
 })();
 (function() {
   'use strict';
@@ -47922,7 +47980,9 @@ angular
     .module('mg')
     .factory('studentService', studentsdata);
 
-  function studentsdata() {
+  studentsdata.$inject = ['Student'];
+
+  function studentsdata(Student) {
     var _students = {};
     return {
       getStudents: getStudents,
@@ -47954,12 +48014,25 @@ angular
       return _students[id];
     }
 
-    function createStudent(student) {
+    function createStudent(name, grade) {
+      var student = new Student(name, grade);
       student.id = Object.keys(_students).length;
       _students[student.id] = student;
       return student;
     }
   }
+})();
+(function() {
+'use strict';
+
+function HomeController() {
+  var vm = this;
+  vm.title = 'Chris Driscol | Material Grades';
+}
+
+angular
+  .module('mg')
+  .controller('HomeController', HomeController);
 })();
 (function() {
   'use strict';
