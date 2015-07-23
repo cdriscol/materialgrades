@@ -1,0 +1,40 @@
+{
+  "name": "materialgrades",
+  "version": "0.0.1",
+  "description": "Playing around with [Angular Material](https://material.angularjs.org).",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cdriscol/materialgrades.git"
+  },
+  "author": "Chris Driscol",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cdriscol/materialgrades/issues"
+  },
+  "homepage": "https://github.com/cdriscol/materialgrades#readme",
+  "devDependencies": {
+    "angular-mocks": "^1.4.3",
+    "bower": "^1.4.1",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^1.11.2",
+    "gulp-karma": "0.0.4",
+    "gulp-load-plugins": "^1.0.0-rc.1",
+    "gulp-ng-annotate": "^1.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.4",
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.12.37",
+    "karma-coverage": "^0.4.2",
+    "karma-jasmine": "^0.3.6",
+    "karma-phantomjs-launcher": "^0.2.0",
+    "lodash": "^3.10.0",
+    "phantomjs": "^1.9.17",
+    "run-sequence": "^1.1.2"
+  },
+  "dependencies": {}
+}
