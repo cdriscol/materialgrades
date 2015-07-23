@@ -15,6 +15,14 @@
       return this.grade < 65;
     };
 
+    Student.prototype.save = function() {
+
+    };
+
+    Student.prototype.delete = function() {
+
+    };
+
     return (Student);
   }
 })();

@@ -5,12 +5,14 @@
     //Initialize global variables
 		var GradesController,
         studentService,
-        scope;
+        scope,
+        Student;
 
 		// Load the main application module
 		beforeEach(module('mg'));
 
-		beforeEach(inject(function($controller, $rootScope, _studentService_) {
+		beforeEach(inject(function($controller, $rootScope, _studentService_, _Student_) {
+      Student = _Student_;
       studentService = _studentService_;
       scope = $rootScope.$new();
 			GradesController = $controller('GradesController', {$scope:scope});
@@ -35,6 +37,38 @@
 
       it('should add student to students', function() {
         expect(GradesController.students.length).toBe(1);
+      });
+    });
+
+    describe('deleteStudent', function() {
+      var student;
+      beforeEach(function() {
+        student = new Student('name', 30);
+        GradesController.students.push(student);
+        spyOn(studentService, 'deleteStudent').and.returnValue(student);
+        GradesController.deleteStudent(student);
+      });
+
+      it('should call studentService to delete student', function() {
+        expect(studentService.deleteStudent).toHaveBeenCalledWith(student);
+      });
+
+      it('should remove student to students', function() {
+        expect(GradesController.students.length).toBe(0);
+      });
+    });
+
+    describe('saveStudent', function() {
+      var student;
+      beforeEach(function() {
+        student = new Student('name', 30);
+        GradesController.students.push(student);
+        spyOn(studentService, 'updateStudent').and.returnValue(student);
+        GradesController.saveStudent(student);
+      });
+
+      it('should call studentService to update student', function() {
+        expect(studentService.updateStudent).toHaveBeenCalledWith(student);
       });
     });
   });

@@ -47902,10 +47902,25 @@ function GradesController(studentService, Student) {
   var vm = this;
   vm.students = studentService.getStudents();
   vm.addStudent = addStudent;
+  vm.deleteStudent = deleteStudent;
+  vm.saveStudent = saveStudent;
 
   function addStudent() {
     var student = studentService.createStudent(vm.name, vm.grade);
     vm.students.push(student);
+  }
+
+  function deleteStudent(student) {
+    studentService.deleteStudent(student);
+    vm.students.forEach(function(existingStudent, index) {
+      if(student.id === existingStudent.id) {
+        vm.students.splice(index, 1);
+      }
+    });
+  }
+
+  function saveStudent(student) {
+    studentService.updateStudent(student);
   }
 }
 })();
@@ -47974,6 +47989,18 @@ function SummaryController(gradeCalculator, $scope) {
   }
 })();
 (function() {
+'use strict';
+
+function HomeController() {
+  var vm = this;
+  vm.title = 'Chris Driscol | Material Grades';
+}
+
+angular
+  .module('mg')
+  .controller('HomeController', HomeController);
+})();
+(function() {
   'use strict';
 
   angular
@@ -48023,18 +48050,6 @@ function SummaryController(gradeCalculator, $scope) {
   }
 })();
 (function() {
-'use strict';
-
-function HomeController() {
-  var vm = this;
-  vm.title = 'Chris Driscol | Material Grades';
-}
-
-angular
-  .module('mg')
-  .controller('HomeController', HomeController);
-})();
-(function() {
   'use strict';
 
   angular
@@ -48049,6 +48064,14 @@ angular
 
     Student.prototype.isFailing = function() {
       return this.grade < 65;
+    };
+
+    Student.prototype.save = function() {
+
+    };
+
+    Student.prototype.delete = function() {
+
     };
 
     return (Student);
