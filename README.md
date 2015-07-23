@@ -5,7 +5,7 @@ Playing around with [Angular Material](https://material.angularjs.org).
 Fair question..
 
 ### Run it from GitHub Pages
-Open <a href="http://cdriscol.github.io/materialgrades" target="_blank">this URL</a> in your browser.
+Open [this URL](https://cdriscol.github.io/materialgrades) in your browser.
 
 ### Run it locally
 Open **index.html** in a browser of your choice.
