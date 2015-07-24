@@ -12,22 +12,7 @@
       <div class="text-center">(no students, yet)</div>
     </div>
     <md-list-item class="md-3-line" ng-repeat="student in gc.students">
-      <div class="md-list-item-text" layout="row" layout-align="center center">
-        <form ng-class="[student.isFailing() ? 'failing' : '']" flex="50" flex-sm="80" layout="row" ng-submit="gc.saveStudent(student)" layout-align="center center">
-          <md-button ng-hide="true" type="submit" aria-label="Update Student" ng-click="gc.saveStudent(student)">Update</md-button>
-          <div flex="15">
-            <md-button type="button" class="pull-right md-fab md-mini" aria-label="Remove Student" ng-click="gc.deleteStudent(student)">X</md-button>
-          </div>
-          <md-input-container flex="15">
-            <label></label>
-            <input flex="15" ng-model="student.grade" ng-blur="gc.saveStudent(student)" min="0" type="number" required>
-          </md-input-container>
-          <md-input-container flex="70">
-            <label></label>
-            <input ng-model="student.name" ng-blur="gc.saveStudent(student)" required>
-          </md-input-container>
-        </form>
-      </div>
+      <<div class="md-list-item-text" layout="row" layout-align="center center" student-row student="student" save-student="gc.saveStudent(student)" delete-student="gc.deleteStudent(student)"></div>
     </md-list-item>
   </md-list>
 </md-content>
