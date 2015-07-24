@@ -26,12 +26,13 @@ You'll need the following installed:
 * [npm](https://github.com/npm/npm)
 * [bower](http://bower.io/)
 * [gulp](http://gulpjs.com/)
+* [http-server](https://www.npmjs.com/package/http-server)
 
 If you don't, check out those links quick and get them installed.
 
 
 #### Install npm dependencies
-Mostly dev packages for **gulp**, **karma**, **bower**, etc.
+Mostly dev packages for **gulp**, **karma**, **bower**, **http-server**, etc.
 ```bash
 $ npm install
 ```
@@ -46,6 +47,13 @@ $ bower install
 This will jshint, run tests, compile sass, and create the files we reference in **index.html**.
 ```bash
 $ gulp build
+```
+
+#### Start http server
+This will start a http server to server the angular app.  This is required because serving from the file system directly will cause CORS issues when loading angular templates.
+
+```bash
+$ http-server .
 ```
 
 Now you should be able to open **index.html** in a browser of your choice..

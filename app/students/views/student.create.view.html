@@ -1,0 +1,17 @@
+<md-content md-theme="docs-dark" layout-padding layout="row" layout-align="center center">
+  <form flex="50" flex-sm="90" flex-md="80" layout="row" ng-submit="vm.addStudent()" >
+    <md-input-container flex="35" offset="15">
+      <label>Student Name</label>
+      <input id="studentname" ng-model="vm.student.name" required>
+    </md-input-container>
+    <md-input-container flex="25">
+      <label>Grade</label>
+      <input ng-model="vm.student.grade" min="0" type="number" required>
+    </md-input-container>
+    <div flex="25">
+      <md-button class="md-fab md-primary" aria-label="Add Student" ng-disabled="!vm.student.isValid()" ng-click="vm.addStudent()" onclick="document.getElementById('studentname').focus();">
+        <span class="mg-btn-add">+</span>
+      </md-button>
+    </div>
+  </form>
+</md-content>

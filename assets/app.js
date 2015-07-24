@@ -47955,6 +47955,22 @@ function SummaryController(gradeCalculator, $scope, studentService) {
 }
 })();
 (function() {
+    'use strict';
+
+    angular
+        .module('mg')
+        .directive('gradesSummary', gradesSummary);
+
+    function gradesSummary() {
+        var directive = {
+            restrict: 'EA',
+            templateUrl: 'app/grades/views/summary.client.view.html',
+        };
+
+        return directive;
+    }
+})();
+(function() {
   'use strict';
 
   angular
@@ -48094,6 +48110,54 @@ angular
       return student;
     }
   }
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('mg')
+        .directive('studentList', studentList);
+
+    function studentList() {
+        var directive = {
+            restrict: 'EA',
+            templateUrl: 'app/students/views/student.list.view.html'
+        };
+
+        return directive;
+    }
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('mg')
+        .directive('createStudent', createStudent);
+
+    function createStudent() {
+        var directive = {
+            restrict: 'EA',
+            templateUrl: 'app/students/views/student.create.view.html',
+            link: linkFunc,
+            scope: {
+              student: '=',
+              addStudent: '&'
+            },
+            controller: Controller,
+            controllerAs: 'vm',
+            bindToController: true
+        };
+
+        return directive;
+
+        function linkFunc(scope, el, attr) {}
+    }
+
+    Controller.$inject = ['studentService', 'Student'];
+
+    function Controller(studentService, Student) {
+        var vm = this;
+    }
 })();
 (function() {
   'use strict';
