@@ -8,9 +8,9 @@
   gradeCalculator.$inject = ['studentService'];
 
   function gradeCalculator(studentService) {
-    var minGrade = 100,
-        maxGrade = 0,
-        avgGrade = 0;
+    var minGrade,
+        maxGrade,
+        avgGrade;
     return {
       getMinGrade: getMinGrade,
       getAvgGrade: getAvgGrade,
@@ -33,12 +33,17 @@
     function calcGrades() {
       var sumGrade = 0,
           students = studentService.getStudents();
+
+      minGrade = undefined;
+      maxGrade = undefined;
+      avgGrade = undefined;
+
       students.forEach(function(student) {
-        minGrade = Math.min(minGrade, student.grade);
-        maxGrade = Math.max(maxGrade, student.grade);
+        minGrade = minGrade ? Math.min(minGrade, student.grade) : student.grade;
+        maxGrade = maxGrade ? Math.max(maxGrade, student.grade) : student.grade;
         sumGrade += student.grade;
       });
-      avgGrade = sumGrade / students.length;
+      avgGrade = parseFloat((sumGrade / students.length).toFixed(1));
     }
   }
 })();

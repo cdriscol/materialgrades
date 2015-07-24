@@ -12,3 +12,7 @@ h1, h2 {
 
 .text-center {
   text-align: center; }
+
+.failing {
+  background: #ff8989;
+  border-radius: 10px; }

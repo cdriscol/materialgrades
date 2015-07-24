@@ -30,7 +30,9 @@ function GradesController(studentService, Student) {
   }
 
   function saveStudent(student) {
-    studentService.updateStudent(student);
+    if(student.isValid()) {
+      studentService.updateStudent(student);
+    }
   }
 }
 })();

@@ -1,4 +1,5 @@
 $log-dark-blue: rgb(33,150,243);
+$log-red: rgb(255, 137, 137);
 
 html {
   font-size: 10px;
@@ -19,4 +20,9 @@ h1, h2 {
 
 .text-center {
   text-align: center;
+}
+
+.failing {
+  background:$log-red;
+  border-radius:10px;
 }

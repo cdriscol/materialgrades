@@ -47890,6 +47890,44 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/* mixin definition ;
   angular.module('mg', ['ngMaterial']);
 })();
 (function() {
+'use strict';
+
+angular
+  .module('mg')
+  .controller('StudentsController', StudentsController);
+
+StudentsController.$inject = ['studentService', 'Student'];
+
+function StudentsController(studentService, Student) {
+  var vm = this;
+  vm.students = studentService.getStudents();
+  vm.addStudent = addStudent;
+  vm.deleteStudent = deleteStudent;
+  vm.saveStudent = saveStudent;
+  vm.newStudent = new Student();
+
+  function addStudent() {
+    var student = studentService.createStudent(vm.newStudent);
+    vm.students.push(student);
+    vm.newStudent = new Student();
+  }
+
+  function deleteStudent(student) {
+    studentService.deleteStudent(student);
+    var studentIndex = vm.students.indexOf(student);
+    if(studentIndex > -1) {
+      vm.students.splice(studentIndex, 1);
+    }
+  }
+
+  function saveStudent(student) {
+    // check if valid
+    // if not valid return db user
+    studentService.updateStudent(student);
+  }
+}
+})();
+(function() {
   'use strict';
 
   angular
@@ -47951,44 +47989,6 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/* mixin definition ;
   }
 })();
 (function() {
-'use strict';
-
-angular
-  .module('mg')
-  .controller('StudentsController', StudentsController);
-
-StudentsController.$inject = ['studentService', 'Student'];
-
-function StudentsController(studentService, Student) {
-  var vm = this;
-  vm.students = studentService.getStudents();
-  vm.addStudent = addStudent;
-  vm.deleteStudent = deleteStudent;
-  vm.saveStudent = saveStudent;
-  vm.newStudent = new Student();
-
-  function addStudent() {
-    var student = studentService.createStudent(vm.newStudent);
-    vm.students.push(student);
-    vm.newStudent = new Student();
-  }
-
-  function deleteStudent(student) {
-    studentService.deleteStudent(student);
-    var studentIndex = vm.students.indexOf(student);
-    if(studentIndex > -1) {
-      vm.students.splice(studentIndex, 1);
-    }
-  }
-
-  function saveStudent(student) {
-    // check if valid
-    // if not valid return db user
-    studentService.updateStudent(student);
-  }
-}
-})();
-(function() {
   'use strict';
 
   angular
@@ -48044,9 +48044,9 @@ function GradesController(studentService, Student) {
   }
 
   function saveStudent(student) {
-    // check if valid
-    // if not valid return db user
-    studentService.updateStudent(student);
+    if(student.isValid()) {
+      studentService.updateStudent(student);
+    }
   }
 }
 })();
@@ -48084,9 +48084,9 @@ function SummaryController(gradeCalculator, $scope, studentService) {
   gradeCalculator.$inject = ['studentService'];
 
   function gradeCalculator(studentService) {
-    var minGrade = 100,
-        maxGrade = 0,
-        avgGrade = 0;
+    var minGrade,
+        maxGrade,
+        avgGrade;
     return {
       getMinGrade: getMinGrade,
       getAvgGrade: getAvgGrade,
@@ -48109,12 +48109,17 @@ function SummaryController(gradeCalculator, $scope, studentService) {
     function calcGrades() {
       var sumGrade = 0,
           students = studentService.getStudents();
+
+      minGrade = undefined;
+      maxGrade = undefined;
+      avgGrade = undefined;
+
       students.forEach(function(student) {
-        minGrade = Math.min(minGrade, student.grade);
-        maxGrade = Math.max(maxGrade, student.grade);
+        minGrade = minGrade ? Math.min(minGrade, student.grade) : student.grade;
+        maxGrade = maxGrade ? Math.max(maxGrade, student.grade) : student.grade;
         sumGrade += student.grade;
       });
-      avgGrade = sumGrade / students.length;
+      avgGrade = parseFloat((sumGrade / students.length).toFixed(1));
     }
   }
 })();
