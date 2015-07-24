@@ -1,13 +1,13 @@
-<form ng-class="[vm.student.isFailing() ? 'failing' : '']" flex="50" flex-sm="80" layout="row" ng-submit="vm.saveStudent(vm.student)" layout-align="center center">
+<form ng-class="[vm.student.isFailing() ? 'failing' : '']" flex="50" flex-md="80" flex-sm="100" layout="row" ng-submit="vm.saveStudent(vm.student)" layout-align="center center">
   <md-button ng-hide="true" type="submit" aria-label="Update Student" ng-click="vm.saveStudent(vm.student)">Update</md-button>
   <div flex="15">
     <md-button type="button" class="pull-right md-fab md-mini" aria-label="Remove Student" ng-click="vm.deleteStudent(vm.student)">X</md-button>
   </div>
   <md-input-container flex="15">
     <label></label>
-    <input flex="15" ng-model="vm.student.grade" ng-blur="vm.saveStudent(vm.student)" min="0" type="number" required>
+    <input flex="15" flex-sm="20" ng-model="vm.student.grade" ng-blur="vm.saveStudent(vm.student)" min="0" type="number" required>
   </md-input-container>
-  <md-input-container flex="70">
+  <md-input-container flex="30" flex-sm="65">
     <label></label>
     <input ng-model="vm.student.name" ng-blur="vm.saveStudent(vm.student)" required>
   </md-input-container>
