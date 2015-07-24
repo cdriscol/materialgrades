@@ -23,7 +23,7 @@
 
       beforeEach(function() {
         mockStudent = new Student('StudentName', 90);
-        createdStudent = studentService.createStudent(mockStudent.name, mockStudent.grade);
+        createdStudent = studentService.createStudent(mockStudent);
       });
 
       it('should create a student', function() {

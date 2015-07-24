@@ -15,12 +15,8 @@
       return this.grade < 65;
     };
 
-    Student.prototype.save = function() {
-
-    };
-
-    Student.prototype.delete = function() {
-
+    Student.prototype.isValid = function() {
+      return this.name && this.grade >= 0;
     };
 
     return (Student);

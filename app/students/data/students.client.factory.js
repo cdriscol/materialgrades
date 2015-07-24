@@ -39,8 +39,7 @@
       return _students[id];
     }
 
-    function createStudent(name, grade) {
-      var student = new Student(name, grade);
+    function createStudent(student) {
       student.id = Object.keys(_students).length;
       _students[student.id] = student;
       return student;

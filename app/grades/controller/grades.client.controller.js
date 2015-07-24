@@ -13,19 +13,20 @@ function GradesController(studentService, Student) {
   vm.addStudent = addStudent;
   vm.deleteStudent = deleteStudent;
   vm.saveStudent = saveStudent;
+  vm.newStudent = new Student();
 
   function addStudent() {
-    var student = studentService.createStudent(vm.name, vm.grade);
+    var student = studentService.createStudent(vm.newStudent);
     vm.students.push(student);
+    vm.newStudent = new Student();
   }
 
   function deleteStudent(student) {
     studentService.deleteStudent(student);
-    vm.students.forEach(function(existingStudent, index) {
-      if(student.id === existingStudent.id) {
-        vm.students.splice(index, 1);
-      }
-    });
+    var studentIndex = vm.students.indexOf(student);
+    if(studentIndex > -1) {
+      vm.students.splice(studentIndex, 1);
+    }
   }
 
   function saveStudent(student) {

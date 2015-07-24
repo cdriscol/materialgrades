@@ -26,17 +26,21 @@
       var student;
       beforeEach(function() {
         spyOn(studentService, 'createStudent').and.returnValue({});
-        GradesController.name = 'test';
-        GradesController.grade = 30;
+        student = new Student('name', 43);
+        GradesController.newStudent = student;
         GradesController.addStudent();
       });
 
       it('should call studentService to add student', function() {
-        expect(studentService.createStudent).toHaveBeenCalledWith('test', 30);
+        expect(studentService.createStudent).toHaveBeenCalledWith(student);
       });
 
       it('should add student to students', function() {
         expect(GradesController.students.length).toBe(1);
+      });
+
+      it('should create a new newStudent', function() {
+        expect(GradesController.newStudent).toEqual(new Student());
       });
     });
 
