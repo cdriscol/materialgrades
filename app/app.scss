@@ -1,6 +1,18 @@
+$log-dark-blue: rgb(33,150,243);
+
 html {
   font-size: 10px;
   body {
     font-size: 1.4rem;
   }
+}
+
+
+.mg-btn-add {
+  font-size: 4rem;
+}
+
+h1, h2 {
+  color: $log-dark-blue;
+  text-align: center;
 }

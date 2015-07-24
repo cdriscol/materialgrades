@@ -2,12 +2,33 @@
 <html ng-app="mg" ng-controller="HomeController as vm">
   <head>
     <title ng-bind="vm.title"></title>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.css">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.css">
     <link rel="stylesheet" type="text/css" href="assets/app.css" />
   </head>
-  <body ng-controller="GradesController as gc">
+  <body ng-controller="GradesController as gc" md-theme="docs-dark">
+    <md-content layout-padding layout-align="center center">
+      <h1 class="md-headline">Material Grades</h1>
+      <h2 class="md-subhead">By Chris Driscol</h2>
+    </md-content>
+    <md-content layout-align="center center" layout-padding layout="row">
+      <md-input-container>
+        <label>Student Name</label>
+        <input ng-model="gc.newStudent.name" required>
+      </md-input-container>
+      <md-input-container>
+        <label>Grade</label>
+        <input ng-model="gc.newStudent.grade" min="0" type="number" required>
+      </md-input-container>
+      <md-button class="md-fab md-primary" aria-label="Add Student" ng-disabled="!gc.newStudent.isValid()" ng-click="gc.addStudent()">
+        <span class="mg-btn-add">+</span>
+      </md-button>
+    </md-content>
+
+    <md-content layout-align="center center" layout-padding layout="row">
+
+    </md-content>
 
     <script type="text/javascript" src="assets/app.js"></script>
   </body>

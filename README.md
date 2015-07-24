@@ -1,5 +1,5 @@
 # Chris Driscol - Material Grades
-Playing around with [Angular Material](https://material.angularjs.org).
+Playing around with [Angular Material](https://material.angularjs.org) and [Angular Style Guide](https://github.com/johnpapa/angular-styleguide).
 
 ## How do I run this thing?
 Fair question..

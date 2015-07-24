@@ -47887,7 +47887,7 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/* mixin definition ;
 (function() {
   'use strict';
 
-  angular.module('mg', []);
+  angular.module('mg', ['ngMaterial']);
 })();
 (function() {
 'use strict';
@@ -47904,19 +47904,20 @@ function GradesController(studentService, Student) {
   vm.addStudent = addStudent;
   vm.deleteStudent = deleteStudent;
   vm.saveStudent = saveStudent;
+  vm.newStudent = new Student();
 
   function addStudent() {
-    var student = studentService.createStudent(vm.name, vm.grade);
+    var student = studentService.createStudent(vm.newStudent);
     vm.students.push(student);
+    vm.newStudent = new Student();
   }
 
   function deleteStudent(student) {
     studentService.deleteStudent(student);
-    vm.students.forEach(function(existingStudent, index) {
-      if(student.id === existingStudent.id) {
-        vm.students.splice(index, 1);
-      }
-    });
+    var studentIndex = vm.students.indexOf(student);
+    if(studentIndex > -1) {
+      vm.students.splice(studentIndex, 1);
+    }
   }
 
   function saveStudent(student) {
@@ -47989,6 +47990,21 @@ function SummaryController(gradeCalculator, $scope) {
   }
 })();
 (function() {
+  'use strict';
+
+  angular
+    .module('mg')
+    .config(themeConfig);
+
+  function themeConfig($mdThemingProvider) {
+    // Configure a dark theme with primary foreground blue
+    $mdThemingProvider.theme('docs-dark', 'default')
+        .primaryPalette('blue')
+        .dark();
+  }
+  themeConfig.$inject = ["$mdThemingProvider"];
+})();
+(function() {
 'use strict';
 
 function HomeController() {
@@ -48041,8 +48057,7 @@ angular
       return _students[id];
     }
 
-    function createStudent(name, grade) {
-      var student = new Student(name, grade);
+    function createStudent(student) {
       student.id = Object.keys(_students).length;
       _students[student.id] = student;
       return student;
@@ -48066,12 +48081,8 @@ angular
       return this.grade < 65;
     };
 
-    Student.prototype.save = function() {
-
-    };
-
-    Student.prototype.delete = function() {
-
+    Student.prototype.isValid = function() {
+      return this.name && this.grade >= 0;
     };
 
     return (Student);
