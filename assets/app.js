@@ -47890,140 +47890,6 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/* mixin definition ;
   angular.module('mg', ['ngMaterial']);
 })();
 (function() {
-'use strict';
-
-angular
-  .module('mg')
-  .controller('GradesController', GradesController);
-
-GradesController.$inject = ['studentService', 'Student'];
-
-function GradesController(studentService, Student) {
-  var vm = this;
-  vm.students = studentService.getStudents();
-  vm.addStudent = addStudent;
-  vm.deleteStudent = deleteStudent;
-  vm.saveStudent = saveStudent;
-  vm.newStudent = new Student();
-
-  function addStudent() {
-    var student = studentService.createStudent(vm.newStudent);
-    vm.students.push(student);
-    vm.newStudent = new Student();
-  }
-
-  function deleteStudent(student) {
-    studentService.deleteStudent(student);
-    var studentIndex = vm.students.indexOf(student);
-    vm.students.splice(studentIndex, 1);
-  }
-
-  function saveStudent(student) {
-    if(student.isValid()) {
-      studentService.updateStudent(student);
-    }
-  }
-}
-})();
-(function() {
-'use strict';
-
-angular
-  .module('mg')
-  .controller('SummaryController', SummaryController);
-
-SummaryController.$inject = ['gradeCalculator', '$scope', 'studentService'];
-
-function SummaryController(gradeCalculator, $scope, studentService) {
-  var vm = this;
-  vm.showSummary = showSummary;
-
-  $scope.$watch(function() {
-    return studentService.getLastUpdate();
-  }, calcGrades);
-
-  function calcGrades() {
-    gradeCalculator.calcGrades();
-    vm.minGrade = gradeCalculator.getMinGrade();
-    vm.maxGrade = gradeCalculator.getMaxGrade();
-    vm.avgGrade = gradeCalculator.getAvgGrade();
-  }
-
-  function showSummary() {
-    return vm.minGrade !== undefined;
-  }
-}
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('mg')
-        .directive('gradesSummary', gradesSummary);
-
-    function gradesSummary() {
-        var directive = {
-            restrict: 'EA',
-            templateUrl: 'app/grades/views/summary.client.view.html',
-        };
-
-        return directive;
-    }
-})();
-(function() {
-  'use strict';
-
-  angular
-    .module('mg')
-    .factory('gradeCalculator', gradeCalculator);
-
-  gradeCalculator.$inject = ['studentService'];
-
-  function gradeCalculator(studentService) {
-    var minGrade,
-        maxGrade,
-        avgGrade;
-    return {
-      getMinGrade: getMinGrade,
-      getAvgGrade: getAvgGrade,
-      getMaxGrade: getMaxGrade,
-      calcGrades: calcGrades
-    };
-
-    function getMinGrade() {
-      return minGrade;
-    }
-
-    function getAvgGrade() {
-      return avgGrade;
-    }
-
-    function getMaxGrade() {
-      return maxGrade;
-    }
-
-    function calcGrades() {
-      var sumGrade = 0,
-          validStudents = 0,
-          students = studentService.getStudents();
-
-      minGrade = undefined;
-      maxGrade = undefined;
-      avgGrade = undefined;
-
-      students.forEach(function(student) {
-        if(student.isValid()) {
-          minGrade = minGrade ? Math.min(minGrade, student.grade) : student.grade;
-          maxGrade = maxGrade ? Math.max(maxGrade, student.grade) : student.grade;
-          sumGrade += student.grade;
-          validStudents++;
-        }
-      });
-      avgGrade = parseFloat((sumGrade / validStudents).toFixed(1));
-    }
-  }
-})();
-(function() {
   'use strict';
 
   angular
@@ -48185,6 +48051,140 @@ function SummaryController(gradeCalculator, $scope, studentService) {
     };
 
     return (Student);
+  }
+})();
+(function() {
+'use strict';
+
+angular
+  .module('mg')
+  .controller('GradesController', GradesController);
+
+GradesController.$inject = ['studentService', 'Student'];
+
+function GradesController(studentService, Student) {
+  var vm = this;
+  vm.students = studentService.getStudents();
+  vm.addStudent = addStudent;
+  vm.deleteStudent = deleteStudent;
+  vm.saveStudent = saveStudent;
+  vm.newStudent = new Student();
+
+  function addStudent() {
+    var student = studentService.createStudent(vm.newStudent);
+    vm.students.push(student);
+    vm.newStudent = new Student();
+  }
+
+  function deleteStudent(student) {
+    studentService.deleteStudent(student);
+    var studentIndex = vm.students.indexOf(student);
+    vm.students.splice(studentIndex, 1);
+  }
+
+  function saveStudent(student) {
+    if(student.isValid()) {
+      studentService.updateStudent(student);
+    }
+  }
+}
+})();
+(function() {
+'use strict';
+
+angular
+  .module('mg')
+  .controller('SummaryController', SummaryController);
+
+SummaryController.$inject = ['gradeCalculator', '$scope', 'studentService'];
+
+function SummaryController(gradeCalculator, $scope, studentService) {
+  var vm = this;
+  vm.showSummary = showSummary;
+
+  $scope.$watch(function() {
+    return studentService.getLastUpdate();
+  }, calcGrades);
+
+  function calcGrades() {
+    gradeCalculator.calcGrades();
+    vm.minGrade = gradeCalculator.getMinGrade();
+    vm.maxGrade = gradeCalculator.getMaxGrade();
+    vm.avgGrade = gradeCalculator.getAvgGrade();
+  }
+
+  function showSummary() {
+    return vm.minGrade !== undefined;
+  }
+}
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('mg')
+        .directive('gradesSummary', gradesSummary);
+
+    function gradesSummary() {
+        var directive = {
+            restrict: 'EA',
+            templateUrl: 'app/grades/views/summary.client.view.html',
+        };
+
+        return directive;
+    }
+})();
+(function() {
+  'use strict';
+
+  angular
+    .module('mg')
+    .factory('gradeCalculator', gradeCalculator);
+
+  gradeCalculator.$inject = ['studentService'];
+
+  function gradeCalculator(studentService) {
+    var minGrade,
+        maxGrade,
+        avgGrade;
+    return {
+      getMinGrade: getMinGrade,
+      getAvgGrade: getAvgGrade,
+      getMaxGrade: getMaxGrade,
+      calcGrades: calcGrades
+    };
+
+    function getMinGrade() {
+      return minGrade;
+    }
+
+    function getAvgGrade() {
+      return avgGrade;
+    }
+
+    function getMaxGrade() {
+      return maxGrade;
+    }
+
+    function calcGrades() {
+      var sumGrade = 0,
+          validStudents = 0,
+          students = studentService.getStudents();
+
+      minGrade = undefined;
+      maxGrade = undefined;
+      avgGrade = undefined;
+
+      students.forEach(function(student) {
+        if(student.isValid()) {
+          minGrade = minGrade ? Math.min(minGrade, student.grade) : student.grade;
+          maxGrade = maxGrade ? Math.max(maxGrade, student.grade) : student.grade;
+          sumGrade += student.grade;
+          validStudents++;
+        }
+      });
+      avgGrade = parseFloat((sumGrade / validStudents).toFixed(1));
+    }
   }
 })();
 (function() {
