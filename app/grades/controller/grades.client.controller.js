@@ -24,9 +24,7 @@ function GradesController(studentService, Student) {
   function deleteStudent(student) {
     studentService.deleteStudent(student);
     var studentIndex = vm.students.indexOf(student);
-    if(studentIndex > -1) {
-      vm.students.splice(studentIndex, 1);
-    }
+    vm.students.splice(studentIndex, 1);
   }
 
   function saveStudent(student) {

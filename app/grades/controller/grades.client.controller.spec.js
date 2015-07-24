@@ -66,13 +66,18 @@
       var student;
       beforeEach(function() {
         student = new Student('name', 30);
-        GradesController.students.push(student);
         spyOn(studentService, 'updateStudent').and.returnValue(student);
-        GradesController.saveStudent(student);
       });
 
       it('should call studentService to update student', function() {
+        GradesController.saveStudent(student);
         expect(studentService.updateStudent).toHaveBeenCalledWith(student);
+      });
+
+      it('should not call studentService if student model is invalid', function() {
+        spyOn(student, 'isValid').and.returnValue(false);
+        GradesController.saveStudent(student);
+        expect(studentService.updateStudent).not.toHaveBeenCalled();
       });
     });
   });

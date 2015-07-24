@@ -32,6 +32,7 @@
 
     function calcGrades() {
       var sumGrade = 0,
+          validStudents = 0,
           students = studentService.getStudents();
 
       minGrade = undefined;
@@ -39,11 +40,14 @@
       avgGrade = undefined;
 
       students.forEach(function(student) {
-        minGrade = minGrade ? Math.min(minGrade, student.grade) : student.grade;
-        maxGrade = maxGrade ? Math.max(maxGrade, student.grade) : student.grade;
-        sumGrade += student.grade;
+        if(student.isValid()) {
+          minGrade = minGrade ? Math.min(minGrade, student.grade) : student.grade;
+          maxGrade = maxGrade ? Math.max(maxGrade, student.grade) : student.grade;
+          sumGrade += student.grade;
+          validStudents++;
+        }
       });
-      avgGrade = parseFloat((sumGrade / students.length).toFixed(1));
+      avgGrade = parseFloat((sumGrade / validStudents).toFixed(1));
     }
   }
 })();

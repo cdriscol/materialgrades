@@ -10,10 +10,12 @@
       gradeCalculator = _gradeCalculator_;
       studentService = _studentService_;
 
-      var s1 = new Student('name', 80);
-      var s2 = new Student('name', 20);
+      var student1 = new Student('name', 80);
+      var student2 = new Student('name', 20);
+      var invalidStudent = new Student();
+      spyOn(invalidStudent, 'isValid').and.returnValue(false);
       studentService.getStudents = function() {
-        return [s1, s2];
+        return [student1, student2, invalidStudent];
       };
     }));
 

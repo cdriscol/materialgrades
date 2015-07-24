@@ -39,6 +39,18 @@
       it('should get avg grade', function() {
         expect(SummaryController.avgGrade).toBe(30);
       });
+
+      describe('showSummary', function() {
+        it('should return truthy when minGrade is defined', function() {
+          SummaryController.minGrade = 0;
+          expect(SummaryController.showSummary()).toBeTruthy();
+        });
+
+        it('should return falsy when minGrade is undefined', function() {
+          SummaryController.minGrade = undefined;
+          expect(SummaryController.showSummary()).toBeFalsy();
+        });
+      });
     });
   });
 })();
