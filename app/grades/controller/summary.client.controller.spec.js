@@ -21,7 +21,7 @@
         spyOn(gradeCalculator, 'getMaxGrade').and.returnValue(20);
         spyOn(gradeCalculator, 'getAvgGrade').and.returnValue(30);
 
-        scope.$broadcast('grades-changed');
+        scope.$apply();
       });
 
       it('should calc grades', function() {

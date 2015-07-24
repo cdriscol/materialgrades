@@ -47890,6 +47890,129 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/* mixin definition ;
   angular.module('mg', ['ngMaterial']);
 })();
 (function() {
+  'use strict';
+
+  angular
+    .module('mg')
+    .factory('studentService', studentsdata);
+
+  studentsdata.$inject = ['Student'];
+
+  function studentsdata(Student) {
+    var _students = {},
+        _lastUpdate;
+    return {
+      getStudents: getStudents,
+      updateStudent: updateStudent,
+      deleteStudent: deleteStudent,
+      createStudent: createStudent,
+      getStudent: getStudent,
+      getLastUpdate: getLastUpdate
+    };
+
+    function updateLastUpdate() {
+      _lastUpdate = new Date();
+    }
+
+    function getLastUpdate() {
+      return _lastUpdate;
+    }
+
+    function getStudents() {
+      var students = [];
+      for(var id in _students) {
+        students.push(_students[id]);
+      }
+      return students;
+    }
+
+    function updateStudent(student) {
+      _students[student.id] = student;
+      updateLastUpdate();
+      return student;
+    }
+
+    function deleteStudent(student) {
+      delete _students[student.id];
+      updateLastUpdate();
+      return student;
+    }
+
+    function getStudent(id) {
+      return _students[id];
+    }
+
+    function createStudent(student) {
+      student.id = Object.keys(_students).length;
+      _students[student.id] = student;
+      updateLastUpdate();
+      return student;
+    }
+  }
+})();
+(function() {
+'use strict';
+
+angular
+  .module('mg')
+  .controller('StudentsController', StudentsController);
+
+StudentsController.$inject = ['studentService', 'Student'];
+
+function StudentsController(studentService, Student) {
+  var vm = this;
+  vm.students = studentService.getStudents();
+  vm.addStudent = addStudent;
+  vm.deleteStudent = deleteStudent;
+  vm.saveStudent = saveStudent;
+  vm.newStudent = new Student();
+
+  function addStudent() {
+    var student = studentService.createStudent(vm.newStudent);
+    vm.students.push(student);
+    vm.newStudent = new Student();
+  }
+
+  function deleteStudent(student) {
+    studentService.deleteStudent(student);
+    var studentIndex = vm.students.indexOf(student);
+    if(studentIndex > -1) {
+      vm.students.splice(studentIndex, 1);
+    }
+  }
+
+  function saveStudent(student) {
+    // check if valid
+    // if not valid return db user
+    studentService.updateStudent(student);
+  }
+}
+})();
+(function() {
+  'use strict';
+
+  angular
+    .module('mg')
+    .factory('Student', StudentModel);
+
+  function StudentModel() {
+    function Student(name, grade) {
+      this.name = name;
+      this.grade = grade;
+    }
+
+    Student.prototype.isFailing = function() {
+      return this.grade < 65;
+    };
+
+    Student.prototype.isValid = function() {
+      return this.name && this.grade >= 0;
+    };
+
+    return (Student);
+  }
+})();
+(function() {
 'use strict';
 
 angular
@@ -47921,6 +48044,8 @@ function GradesController(studentService, Student) {
   }
 
   function saveStudent(student) {
+    // check if valid
+    // if not valid return db user
     studentService.updateStudent(student);
   }
 }
@@ -47932,17 +48057,21 @@ angular
   .module('mg')
   .controller('SummaryController', SummaryController);
 
-SummaryController.$inject = ['gradeCalculator', '$scope'];
+SummaryController.$inject = ['gradeCalculator', '$scope', 'studentService'];
 
-function SummaryController(gradeCalculator, $scope) {
+function SummaryController(gradeCalculator, $scope, studentService) {
   var vm = this;
 
-  $scope.$on('grades-changed', function(event, args) {
+  $scope.$watch(function() {
+    return studentService.getLastUpdate();
+  }, calcGrades);
+
+  function calcGrades() {
     gradeCalculator.calcGrades();
     vm.minGrade = gradeCalculator.getMinGrade();
     vm.maxGrade = gradeCalculator.getMaxGrade();
     vm.avgGrade = gradeCalculator.getAvgGrade();
-  });
+  }
 }
 })();
 (function() {
@@ -48015,76 +48144,4 @@ function HomeController() {
 angular
   .module('mg')
   .controller('HomeController', HomeController);
-})();
-(function() {
-  'use strict';
-
-  angular
-    .module('mg')
-    .factory('studentService', studentsdata);
-
-  studentsdata.$inject = ['Student'];
-
-  function studentsdata(Student) {
-    var _students = {};
-    return {
-      getStudents: getStudents,
-      updateStudent: updateStudent,
-      deleteStudent: deleteStudent,
-      createStudent: createStudent,
-      getStudent: getStudent
-    };
-
-    function getStudents() {
-      var students = [];
-      for(var id in _students) {
-        students.push(_students[id]);
-      }
-      return students;
-    }
-
-    function updateStudent(student) {
-      _students[student.id] = student;
-      return student;
-    }
-
-    function deleteStudent(student) {
-      delete _students[student.id];
-      return student;
-    }
-
-    function getStudent(id) {
-      return _students[id];
-    }
-
-    function createStudent(student) {
-      student.id = Object.keys(_students).length;
-      _students[student.id] = student;
-      return student;
-    }
-  }
-})();
-(function() {
-  'use strict';
-
-  angular
-    .module('mg')
-    .factory('Student', StudentModel);
-
-  function StudentModel() {
-    function Student(name, grade) {
-      this.name = name;
-      this.grade = grade;
-    }
-
-    Student.prototype.isFailing = function() {
-      return this.grade < 65;
-    };
-
-    Student.prototype.isValid = function() {
-      return this.name && this.grade >= 0;
-    };
-
-    return (Student);
-  }
 })();

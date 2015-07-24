@@ -27,6 +27,20 @@
         </md-button>
       </form>
     </md-content>
+    <md-content ng-controller="SummaryController as sc" layout-padding layout-align="center center" layout="row">
+      <div flex="10" ng-if="sc.avgGrade" class="text-center">
+        <div class="md-display-3">{{sc.minGrade}}</div>
+        <div>min</div>
+      </div>
+      <div flex="10" ng-if="sc.avgGrade" class="text-center">
+        <div class="md-display-3">{{sc.avgGrade}}</div>
+        <div>avg</div>
+      </div>
+      <div flex="10" ng-if="sc.avgGrade" class="text-center">
+        <div class="md-display-3">{{sc.maxGrade}}</div>
+        <div>max</div>
+      </div>
+    </md-content>
 
     <md-content layout-padding layout-align="center center">
       <md-list>
@@ -40,10 +54,15 @@
         </div>
         <md-list-item class="md-3-line" ng-repeat="student in gc.students">
           <div class="md-list-item-text" layout="row" layout-align="center center">
+            <md-button class="md-fab md-mini" aria-label="Remove Student" ng-click="gc.deleteStudent(student)">
+              X
+            </md-button>
             <md-input-container flex="5">
+              <label></label>
               <input ng-model="student.grade" min="0" type="number" required>
             </md-input-container>
             <md-input-container flex="25">
+              <label></label>
               <input ng-model="student.name" required>
             </md-input-container>
           </div>
