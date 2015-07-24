@@ -9,6 +9,7 @@ SummaryController.$inject = ['gradeCalculator', '$scope', 'studentService'];
 
 function SummaryController(gradeCalculator, $scope, studentService) {
   var vm = this;
+  vm.showSummary = showSummary;
 
   $scope.$watch(function() {
     return studentService.getLastUpdate();
@@ -19,6 +20,10 @@ function SummaryController(gradeCalculator, $scope, studentService) {
     vm.minGrade = gradeCalculator.getMinGrade();
     vm.maxGrade = gradeCalculator.getMaxGrade();
     vm.avgGrade = gradeCalculator.getAvgGrade();
+  }
+
+  function showSummary() {
+    return vm.minGrade !== undefined;
   }
 }
 })();
