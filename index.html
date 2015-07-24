@@ -1,83 +1,85 @@
 <!DOCTYPE html>
 <html ng-app="mg" ng-controller="HomeController as vm">
-  <head>
-    <title ng-bind="vm.title"></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/app.css" />
-  </head>
-  <body ng-controller="GradesController as gc">
-    <md-content md-theme="docs-dark" layout-padding layout-align="center center">
-      <h1 class="md-headline">Material Grades</h1>
-      <h2 class="md-subhead">By Chris Driscol</h2>
-    </md-content>
-    <md-content md-theme="docs-dark"  layout-padding layout="row">
-      <form flex layout="row" ng-submit="gc.addStudent()" layout-align="center center">
-        <md-input-container>
-          <label>Student Name</label>
-          <input id="studentname" ng-model="gc.newStudent.name" required>
-        </md-input-container>
-        <md-input-container>
-          <label>Grade</label>
-          <input ng-model="gc.newStudent.grade" min="0" type="number" required>
-        </md-input-container>
-        <md-button class="md-fab md-primary" aria-label="Add Student" ng-disabled="!gc.newStudent.isValid()" ng-click="gc.addStudent()" onclick="document.getElementById('studentname').focus();">
-          <span class="mg-btn-add">+</span>
-        </md-button>
-      </form>
-    </md-content>
-    <md-content ng-controller="SummaryController as sc" layout-padding layout-align="center center" layout="row">
-      <div flex="10" flex-sm="33" ng-if="sc.showSummary()" class="text-center">
-        <div class="md-display-3">{{sc.minGrade}}</div>
-        <div>min</div>
-      </div>
-      <div flex="10" flex-sm="33" ng-if="sc.showSummary()" class="text-center">
-        <div class="md-display-3">{{sc.avgGrade}}</div>
-        <div>avg</div>
-      </div>
-      <div flex="10" flex-sm="33" ng-if="sc.showSummary()" class="text-center">
-        <div class="md-display-3">{{sc.maxGrade}}</div>
-        <div>max</div>
-      </div>
-    </md-content>
+<head>
+  <title ng-bind="vm.title"></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <md-content layout-padding layout-align="center center">
-      <md-list>
-        <h3 class="md-title text-center">students</h3>
-        <div ng-if="gc.students.length" layout="row" layout-align="center center">
-          <div flex="50" flex-sm="80" layout="row">
-            <div flex="15"></div>
-            <div flex="15" class="text-center">grade</div>
-            <div flex="70" class="text-center">name</div>
-          </div>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.10.0/angular-material.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/app.css" />
+</head>
+
+<body ng-controller="GradesController as gc">
+  <md-content md-theme="docs-dark" layout-padding layout-align="center center">
+    <h1 class="md-headline">Material Grades</h1>
+    <h2 class="md-subhead">By Chris Driscol</h2>
+  </md-content>
+
+  <md-content md-theme="docs-dark" layout-padding layout="row">
+    <form flex layout="row" ng-submit="gc.addStudent()" layout-align="center center">
+      <md-input-container>
+        <label>Student Name</label>
+        <input id="studentname" ng-model="gc.newStudent.name" required>
+      </md-input-container>
+      <md-input-container>
+        <label>Grade</label>
+        <input ng-model="gc.newStudent.grade" min="0" type="number" required>
+      </md-input-container>
+      <md-button class="md-fab md-primary" aria-label="Add Student" ng-disabled="!gc.newStudent.isValid()" ng-click="gc.addStudent()" onclick="document.getElementById('studentname').focus();">
+        <span class="mg-btn-add">+</span>
+      </md-button>
+    </form>
+  </md-content>
+
+  <md-content ng-controller="SummaryController as sc" layout-padding layout-align="center center" layout="row">
+    <div flex="10" flex-sm="33" ng-if="sc.showSummary()" class="text-center">
+      <div class="md-display-3">{{sc.minGrade}}</div>
+      <div>min</div>
+    </div>
+    <div flex="10" flex-sm="33" ng-if="sc.showSummary()" class="text-center">
+      <div class="md-display-3">{{sc.avgGrade}}</div>
+      <div>avg</div>
+    </div>
+    <div flex="10" flex-sm="33" ng-if="sc.showSummary()" class="text-center">
+      <div class="md-display-3">{{sc.maxGrade}}</div>
+      <div>max</div>
+    </div>
+  </md-content>
+
+  <md-content layout-padding layout-align="center center">
+    <md-list>
+      <h3 class="md-title text-center">students</h3>
+      <div ng-if="gc.students.length" layout="row" layout-align="center center">
+        <div flex="50" flex-sm="80" layout="row">
+          <div flex="15"></div>
+          <div flex="15" class="text-center">grade</div>
+          <div flex="70" class="text-center">name</div>
         </div>
-        <div ng-if="!gc.students.length">
-          <div class="text-center">(no students, yet)</div>
+      </div>
+      <div ng-if="!gc.students.length">
+        <div class="text-center">(no students, yet)</div>
+      </div>
+      <md-list-item class="md-3-line" ng-repeat="student in gc.students">
+        <div class="md-list-item-text" layout="row" layout-align="center center">
+          <form ng-class="[student.isFailing() ? 'failing' : '']" flex="50" flex-sm="80" layout="row" ng-submit="gc.saveStudent(student)" layout-align="center center">
+            <md-button ng-hide="true" type="submit" aria-label="Update Student" ng-click="gc.saveStudent(student)">Update</md-button>
+            <div flex="15">
+              <md-button type="button" class="pull-right md-fab md-mini" aria-label="Remove Student" ng-click="gc.deleteStudent(student)">X</md-button>
+            </div>
+            <md-input-container flex="15">
+              <label></label>
+              <input flex="15" ng-model="student.grade" ng-blur="gc.saveStudent(student)" min="0" type="number" required>
+            </md-input-container>
+            <md-input-container flex="70">
+              <label></label>
+              <input ng-model="student.name" ng-blur="gc.saveStudent(student)" required>
+            </md-input-container>
+          </form>
         </div>
-        <md-list-item class="md-3-line" ng-repeat="student in gc.students">
-          <div class="md-list-item-text" layout="row" layout-align="center center">
-            <form ng-class="[student.isFailing() ? 'failing' : '']" flex="50" flex-sm="80" layout="row" ng-submit="gc.saveStudent(student)" layout-align="center center">
-              <md-button ng-hide="true" type="submit" aria-label="Update Student" ng-click="gc.saveStudent(student)">Update</md-button>
-              <div flex="15">
-                <md-button type="button" class="pull-right md-fab md-mini" aria-label="Remove Student" ng-click="gc.deleteStudent(student)">
-                  X
-                </md-button>
-              </div>
-              <md-input-container flex="15">
-                <label></label>
-                <input flex="15" ng-model="student.grade" ng-blur="gc.saveStudent(student)" min="0" type="number" required>
-              </md-input-container>
-              <md-input-container flex="70">
-                <label></label>
-                <input ng-model="student.name" ng-blur="gc.saveStudent(student)" required>
-              </md-input-container>
-            </form>
-          </div>
-        </md-list-item>
-      </md-list>
-    </md-content>
+      </md-list-item>
+    </md-list>
+  </md-content>
+  <script type="text/javascript" src="assets/app.js"></script>
+</body>
 
-    <script type="text/javascript" src="assets/app.js"></script>
-  </body>
 </html>

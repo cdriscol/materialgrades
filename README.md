@@ -8,10 +8,7 @@ Fair question..
 Open [this URL](https://cdriscol.github.io/materialgrades) in your browser.
 
 ### Run it locally
-Open **index.html** in a browser of your choice.
-
-### Install and run
-I can respect that!
+Rolling up your sleeves, I can respect that!
 
 I'll assume you know how to use [npm](https://github.com/npm/npm) and [gulp.js](http://gulpjs.com/) if you've made it this far.
 
