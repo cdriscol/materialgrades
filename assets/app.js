@@ -47890,6 +47890,139 @@ angular.module("material.core").constant("$MD_THEME_CSS", "/* mixin definition ;
   angular.module('mg', ['ngMaterial']);
 })();
 (function() {
+  'use strict';
+
+  angular
+    .module('mg')
+    .factory('studentService', studentsdata);
+
+  studentsdata.$inject = ['Student'];
+
+  function studentsdata(Student) {
+    var _students = {},
+        _lastUpdate;
+    return {
+      getStudents: getStudents,
+      updateStudent: updateStudent,
+      deleteStudent: deleteStudent,
+      createStudent: createStudent,
+      getStudent: getStudent,
+      getLastUpdate: getLastUpdate
+    };
+
+    function updateLastUpdate() {
+      _lastUpdate = new Date();
+    }
+
+    function getLastUpdate() {
+      return _lastUpdate;
+    }
+
+    function getStudents() {
+      var students = [];
+      for(var id in _students) {
+        students.push(_students[id]);
+      }
+      return students;
+    }
+
+    function updateStudent(student) {
+      _students[student.id] = student;
+      updateLastUpdate();
+      return student;
+    }
+
+    function deleteStudent(student) {
+      delete _students[student.id];
+      updateLastUpdate();
+      return student;
+    }
+
+    function getStudent(id) {
+      return _students[id];
+    }
+
+    function createStudent(student) {
+      student.id = Object.keys(_students).length;
+      _students[student.id] = student;
+      updateLastUpdate();
+      return student;
+    }
+  }
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('mg')
+        .directive('studentList', studentList);
+
+    function studentList() {
+        var directive = {
+            restrict: 'EA',
+            templateUrl: 'app/students/views/student.list.view.html'
+        };
+
+        return directive;
+    }
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('mg')
+        .directive('createStudent', createStudent);
+
+    function createStudent() {
+        var directive = {
+            restrict: 'EA',
+            templateUrl: 'app/students/views/student.create.view.html',
+            link: linkFunc,
+            scope: {
+              student: '=',
+              addStudent: '&'
+            },
+            controller: Controller,
+            controllerAs: 'vm',
+            bindToController: true
+        };
+
+        return directive;
+
+        function linkFunc(scope, el, attr) {}
+    }
+
+    Controller.$inject = ['studentService', 'Student'];
+
+    function Controller(studentService, Student) {
+        var vm = this;
+    }
+})();
+(function() {
+  'use strict';
+
+  angular
+    .module('mg')
+    .factory('Student', StudentModel);
+
+  function StudentModel() {
+    function Student(name, grade) {
+      this.name = name;
+      this.grade = grade;
+    }
+
+    Student.prototype.isFailing = function() {
+      return this.grade < 65;
+    };
+
+    Student.prototype.isValid = function() {
+      return this.name && this.grade >= 0;
+    };
+
+    return (Student);
+  }
+})();
+(function() {
 'use strict';
 
 angular
@@ -48049,137 +48182,4 @@ function HomeController() {
 angular
   .module('mg')
   .controller('HomeController', HomeController);
-})();
-(function() {
-  'use strict';
-
-  angular
-    .module('mg')
-    .factory('studentService', studentsdata);
-
-  studentsdata.$inject = ['Student'];
-
-  function studentsdata(Student) {
-    var _students = {},
-        _lastUpdate;
-    return {
-      getStudents: getStudents,
-      updateStudent: updateStudent,
-      deleteStudent: deleteStudent,
-      createStudent: createStudent,
-      getStudent: getStudent,
-      getLastUpdate: getLastUpdate
-    };
-
-    function updateLastUpdate() {
-      _lastUpdate = new Date();
-    }
-
-    function getLastUpdate() {
-      return _lastUpdate;
-    }
-
-    function getStudents() {
-      var students = [];
-      for(var id in _students) {
-        students.push(_students[id]);
-      }
-      return students;
-    }
-
-    function updateStudent(student) {
-      _students[student.id] = student;
-      updateLastUpdate();
-      return student;
-    }
-
-    function deleteStudent(student) {
-      delete _students[student.id];
-      updateLastUpdate();
-      return student;
-    }
-
-    function getStudent(id) {
-      return _students[id];
-    }
-
-    function createStudent(student) {
-      student.id = Object.keys(_students).length;
-      _students[student.id] = student;
-      updateLastUpdate();
-      return student;
-    }
-  }
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('mg')
-        .directive('studentList', studentList);
-
-    function studentList() {
-        var directive = {
-            restrict: 'EA',
-            templateUrl: 'app/students/views/student.list.view.html'
-        };
-
-        return directive;
-    }
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('mg')
-        .directive('createStudent', createStudent);
-
-    function createStudent() {
-        var directive = {
-            restrict: 'EA',
-            templateUrl: 'app/students/views/student.create.view.html',
-            link: linkFunc,
-            scope: {
-              student: '=',
-              addStudent: '&'
-            },
-            controller: Controller,
-            controllerAs: 'vm',
-            bindToController: true
-        };
-
-        return directive;
-
-        function linkFunc(scope, el, attr) {}
-    }
-
-    Controller.$inject = ['studentService', 'Student'];
-
-    function Controller(studentService, Student) {
-        var vm = this;
-    }
-})();
-(function() {
-  'use strict';
-
-  angular
-    .module('mg')
-    .factory('Student', StudentModel);
-
-  function StudentModel() {
-    function Student(name, grade) {
-      this.name = name;
-      this.grade = grade;
-    }
-
-    Student.prototype.isFailing = function() {
-      return this.grade < 65;
-    };
-
-    Student.prototype.isValid = function() {
-      return this.name && this.grade >= 0;
-    };
-
-    return (Student);
-  }
 })();

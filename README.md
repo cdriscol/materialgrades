@@ -56,4 +56,4 @@ This will start a http server to server the angular app.  This is required becau
 $ http-server .
 ```
 
-Now you should be able to open **index.html** in a browser of your choice..
+Now you should be able to open http://localhost:8080 in a browser of your choice..
