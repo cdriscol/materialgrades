@@ -5,7 +5,7 @@ Playing around with [Angular Material](https://material.angularjs.org) and [Angu
 This is a simple student grade application.  
 
 Features include:
-* Enter students by name and grade 1-?? (*there is now max*)
+* Enter students by name and grade 1-?? (*there is no max*)
 * Calculates minimum, average, and maximum grades
 * Inline editing of grades
 * Removal of student
